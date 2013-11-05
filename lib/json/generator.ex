@@ -10,8 +10,12 @@ defimpl JSON.Generator, for: BitString do
   def generate(thing), do: Inspect.BitString.inspect(thing, ?")
 end
 
-defimpl JSON.Generator, for: Number do
-  def generate(number), do: "#{number}"
+defimpl JSON.Generator, for: Integer do
+  def generate(int), do: "#{int}"
+end
+
+defimpl JSON.Generator, for: Float do
+  def generate(float), do: "#{float}"
 end
 
 defimpl JSON.Generator, for: Tuple do
@@ -35,7 +39,7 @@ defimpl JSON.Generator, for: List do
   end
 
   defp jsonify(list) do
-    Enum.join(Enum.map(list, JSON.Generator.generate(&1)),",")
+    Enum.join(Enum.map(list, &(JSON.Generator.generate(&1))),",")
   end
 
   defp has_tuple?(list) when is_list(list) do
